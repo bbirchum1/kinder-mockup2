@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Guided Practice – Optima Academy Online</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Century Gothic','Arial Rounded MT Bold',Verdana,sans-serif;background:#F0F2F8}
+p{margin:0}button{font-family:inherit;cursor:pointer}
+.act-card{background:#fff;border:2px solid #E2E8F4;border-radius:18px;margin-bottom:18px;overflow:hidden;box-shadow:0 2px 10px rgba(14,28,66,0.04)}
+.act-header{display:flex;align-items:center;gap:12px;padding:14px 20px 14px 18px;border-bottom:1.5px solid #E2E8F4}
+.act-num{width:38px;height:38px;border-radius:14px;color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-title{font-size:19px;color:#0E1C42;font-weight:800;line-height:1.2}
+.act-sub{font-size:12px;color:#7A88A8}
+.act-time{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;color:#fff;white-space:nowrap}
+.act-body{padding:18px 22px}
+.vid-ph{background:#1a1a2e;border-radius:14px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;margin-bottom:14px}
+.vid-ph:hover .play-r{transform:scale(1.1)}
+.play-r{width:60px;height:60px;border-radius:50%;background:rgba(85,200,232,0.9);display:flex;align-items:center;justify-content:center;transition:transform .2s;box-shadow:0 4px 16px rgba(85,200,232,0.4)}
+.play-t{width:0;height:0;border-style:solid;border-width:12px 0 12px 20px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.vid-label{font-size:13px;color:rgba(255,255,255,0.5);font-weight:600}
+.vid-embed{border-radius:14px;overflow:hidden;margin-bottom:14px;background:#1a1a2e}
+.vid-embed video,.vid-embed iframe{width:100%;aspect-ratio:16/9;display:block;border:none;border-radius:14px}
+.vid-embed-sm{border-radius:12px;overflow:hidden;max-width:300px;margin:12px auto;background:#1a1a2e}
+.vid-embed-sm video,.vid-embed-sm iframe{width:100%;aspect-ratio:16/9;display:block;border:none;border-radius:12px}
+.vid-thumb{position:relative;border-radius:14px;overflow:hidden;margin-bottom:14px;cursor:pointer;aspect-ratio:16/9;background:linear-gradient(135deg,#0E1C42 0%,#1a2a5e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.vid-thumb:hover .play-r{transform:scale(1.12)}
+.vid-thumb .owl{font-size:48px;opacity:0.25;position:absolute;top:14px;left:16px}
+.vid-thumb .brand{position:absolute;top:18px;right:16px;font-size:11px;color:rgba(255,255,255,0.25);font-weight:700;letter-spacing:0.5px}
+.vid-thumb-sm{position:relative;border-radius:12px;overflow:hidden;max-width:300px;margin:12px auto;cursor:pointer;aspect-ratio:16/9;background:linear-gradient(135deg,#0E1C42 0%,#1a2a5e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.vid-thumb-sm:hover .play-r{transform:scale(1.12)}
+.vid-thumb-sm .play-r{width:44px;height:44px}
+.vid-thumb-sm .play-t{border-width:8px 0 8px 14px;margin-left:2px}
+.tap-btn{border:3px solid #E2E8F4;border-radius:16px;padding:14px;background:#FAFBFF;font-size:28px;font-weight:800;color:#0E1C42;text-align:center;transition:all .2s;cursor:pointer;min-width:70px}
+.tap-btn:hover{transform:scale(1.06);border-color:#55C8E8;background:#EAF8FD}
+.tap-btn:active{transform:scale(0.97)}
+.tap-btn.correct{border-color:#34B76F;background:#E3F8ED;color:#34B76F}
+.tap-btn.wrong{border-color:#E76F51;background:#FFF0EB;color:#E76F51}
+.fb-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(14,28,66,0.55);display:flex;align-items:center;justify-content:center;z-index:1000;animation:fadeIn .3s}
+.fb-card{background:#fff;border-radius:24px;padding:24px 28px;max-width:420px;width:90%;text-align:center;box-shadow:0 12px 40px rgba(14,28,66,0.25);animation:popIn .35s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+.fb-vid{background:#1a1a2e;border-radius:12px;aspect-ratio:16/9;max-width:300px;margin:12px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.fb-vid .play-r{width:44px;height:44px}
+.fb-vid .play-t{border-width:8px 0 8px 14px;margin-left:2px}
+.dots{display:flex;gap:6px;justify-content:center;margin:10px 0}
+.dot{width:12px;height:12px;border-radius:50%;background:#E2E8F4;transition:all .3s}
+.dot.active{background:#55C8E8;transform:scale(1.15)}
+.dot.done{background:#34B76F}
+.done-box{text-align:center;padding:20px}
+.done-box .icon{font-size:48px;margin-bottom:6px}
+.done-box .msg{font-size:20px;font-weight:800}
+.done-box .sub{font-size:14px;color:#7A88A8;margin-top:4px}
+.dice{width:80px;height:80px;background:#fff;border:3px solid #0E1C42;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;color:#0E1C42;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.dice.rolling{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-8deg)}}
+.count-cell{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;border:2px solid #E2E8F4;background:#FAFBFF;transition:all .2s}
+.count-cell.filled{background:#E3F8ED;border-color:#34B76F;color:#34B76F}
+.count-cell.current{background:#EAF8FD;border-color:#55C8E8;color:#55C8E8;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.fluency-problem{font-size:52px;font-weight:800;color:#0E1C42;text-align:center;line-height:1.2;margin:16px 0}
+.fluency-score{display:flex;justify-content:center;gap:4px;margin:8px 0}
+.fluency-pip{width:20px;height:20px;border-radius:50%;background:#E2E8F4}
+.fluency-pip.right{background:#34B76F}
+.fluency-pip.wrong{background:#E76F51}
+.progress-bar{position:sticky;top:0;z-index:900;background:#0E1C42;padding:6px 16px;display:flex;align-items:center;gap:10px;border-bottom:2px solid rgba(85,200,232,0.3)}
+.progress-track{flex:1;height:14px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#55C8E8,#34B76F);border-radius:10px;transition:width 0.6s ease;width:0%}
+.progress-label{font-size:12px;color:rgba(255,255,255,0.7);font-weight:700;white-space:nowrap}
+.progress-stars{display:flex;gap:3px}
+.progress-star{font-size:16px;opacity:0.25;transition:all 0.4s ease}
+.progress-star.earned{opacity:1;transform:scale(1.2)}
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes drift{0%{transform:translateX(-200px)}100%{transform:translateX(1100px)}}
+@keyframes crawl{0%{transform:translateX(-60px)}100%{transform:translateX(1020px)}}
+@keyframes crawl2{0%{transform:translateX(-40px)}100%{transform:translateX(1020px)}}
+@keyframes twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div style="max-width:960px;margin:0 auto;background:#F0F2F8">
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progress-bar">
+  <div class="progress-stars" id="progress-stars">
+    <span class="progress-star" id="star-1">⭐</span>
+    <span class="progress-star" id="star-2">⭐</span>
+    <span class="progress-star" id="star-3">⭐</span>
+    <span class="progress-star" id="star-4">⭐</span>
+    <span class="progress-star" id="star-5">⭐</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label">0 / 5</div>
+</div>
+
+<!-- HEADER -->
+<div style="background:#0E1C42;border-bottom:6px solid #55C8E8;padding:20px 28px 18px">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+    <div style="width:52px;height:52px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15)"><span style="font-size:32px">🦉</span></div>
+    <div>
+      <div style="font-size:22px;color:#fff;font-weight:800;line-height:1.15">Optima Academy Online</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:600">Guided Practice</div>
+    </div>
+  </div>
+  <div style="background:rgba(85,200,232,0.15);border:1.5px solid rgba(85,200,232,0.3);border-radius:14px;padding:14px 18px">
+    <div style="font-size:26px;color:#fff;font-weight:800;line-height:1.2">🔢 Chapter 11: Add &amp; Subtract</div>
+    <div style="font-size:14px;color:#55C8E8;font-weight:600;margin-top:4px">Math · Quarter 3 · Lesson 11.1</div>
+  </div>
+</div>
+
+<!-- ANIMATED HERO BANNER -->
+<div style="background:linear-gradient(135deg,#EAF8FD 0%,#F0E8FF 50%,#FFF0EB 100%);overflow:hidden;position:relative;height:220px">
+  <svg viewBox="0 0 960 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;top:0;left:0">
+    <!-- Floating clouds -->
+    <g style="animation:drift 20s linear infinite">
+      <ellipse cx="120" cy="35" rx="50" ry="18" fill="rgba(255,255,255,0.6)"/>
+      <ellipse cx="140" cy="28" rx="35" ry="14" fill="rgba(255,255,255,0.7)"/>
+    </g>
+    <g style="animation:drift 25s linear infinite;animation-delay:-8s">
+      <ellipse cx="650" cy="45" rx="45" ry="16" fill="rgba(255,255,255,0.5)"/>
+      <ellipse cx="670" cy="38" rx="30" ry="12" fill="rgba(255,255,255,0.6)"/>
+    </g>
+
+    <!-- Ground / grass -->
+    <ellipse cx="480" cy="220" rx="520" ry="30" fill="#C8E6C9"/>
+
+    <!-- Snail 1 crawling -->
+    <g style="animation:crawl 12s linear infinite">
+      <g transform="translate(0,165)">
+        <circle cx="0" cy="-12" r="16" fill="#55C8E8" opacity="0.8"/>
+        <circle cx="0" cy="-12" r="10" fill="#EAF8FD"/>
+        <circle cx="0" cy="-12" r="5" fill="#55C8E8" opacity="0.5"/>
+        <ellipse cx="12" cy="0" rx="18" ry="6" fill="#FFB3B3"/>
+        <line x1="22" y1="-2" x2="26" y2="-12" stroke="#FFB3B3" stroke-width="2" stroke-linecap="round"/>
+        <line x1="18" y1="-2" x2="22" y2="-12" stroke="#FFB3B3" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="26" cy="-13" r="2.5" fill="#0E1C42"/>
+        <circle cx="22" cy="-13" r="2.5" fill="#0E1C42"/>
+        <path d="M24,2 Q26,5 28,2" stroke="#0E1C42" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Snail 2 slower -->
+    <g style="animation:crawl2 18s linear infinite">
+      <g transform="translate(0,178)">
+        <circle cx="0" cy="-10" r="13" fill="#8B6FC0" opacity="0.8"/>
+        <circle cx="0" cy="-10" r="8" fill="#F0E8FF"/>
+        <circle cx="0" cy="-10" r="4" fill="#8B6FC0" opacity="0.5"/>
+        <ellipse cx="10" cy="0" rx="14" ry="5" fill="#FFD4A8"/>
+        <line x1="18" y1="-2" x2="21" y2="-10" stroke="#FFD4A8" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="15" y1="-2" x2="18" y2="-10" stroke="#FFD4A8" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="21" cy="-11" r="2" fill="#0E1C42"/>
+        <circle cx="18" cy="-11" r="2" fill="#0E1C42"/>
+        <path d="M20,1 Q21,3.5 23,1" stroke="#0E1C42" stroke-width="1" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Big floating numbers -->
+    <text x="160" y="110" font-family="Century Gothic,Verdana,sans-serif" font-size="52" font-weight="800" fill="#55C8E8" opacity="0.3" style="animation:bob 3s ease-in-out infinite">8</text>
+    <text x="350" y="90" font-family="Century Gothic,Verdana,sans-serif" font-size="44" font-weight="800" fill="#8B6FC0" opacity="0.25" style="animation:bob 3.5s ease-in-out infinite;animation-delay:-1s">+</text>
+    <text x="500" y="105" font-family="Century Gothic,Verdana,sans-serif" font-size="48" font-weight="800" fill="#34B76F" opacity="0.3" style="animation:bob 2.8s ease-in-out infinite;animation-delay:-0.5s">3</text>
+    <text x="680" y="95" font-family="Century Gothic,Verdana,sans-serif" font-size="44" font-weight="800" fill="#E76F51" opacity="0.25" style="animation:bob 3.2s ease-in-out infinite;animation-delay:-1.5s">=</text>
+
+    <!-- Stars twinkling -->
+    <text x="80" y="60" font-size="18" style="animation:twinkle 2s ease-in-out infinite">⭐</text>
+    <text x="420" y="35" font-size="14" style="animation:twinkle 2.5s ease-in-out infinite;animation-delay:-1s">✨</text>
+    <text x="750" y="40" font-size="16" style="animation:twinkle 1.8s ease-in-out infinite;animation-delay:-0.5s">⭐</text>
+    <text x="880" y="25" font-size="12" style="animation:twinkle 2.2s ease-in-out infinite;animation-delay:-1.5s">✨</text>
+    <text x="260" y="25" font-size="13" style="animation:twinkle 3s ease-in-out infinite;animation-delay:-2s">✨</text>
+
+  </svg>
+</div>
+
+<!-- INFO STRIP -->
+<div style="display:flex;gap:0;border-bottom:2px solid #E2E8F4">
+  <div style="flex:1;background:#fff;padding:12px 16px;text-align:center;border-right:1.5px solid #E2E8F4">
+    <div style="font-size:11px;color:#7A88A8;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Time</div>
+    <div style="font-size:16px;color:#0E1C42;font-weight:800">~25 min</div>
+  </div>
+  <div style="flex:1;background:#fff;padding:12px 16px;text-align:center;border-right:1.5px solid #E2E8F4">
+    <div style="font-size:11px;color:#7A88A8;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Activities</div>
+    <div style="font-size:16px;color:#0E1C42;font-weight:800">5</div>
+  </div>
+  <div style="flex:1;background:#fff;padding:12px 16px;text-align:center">
+    <div style="font-size:11px;color:#7A88A8;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Type</div>
+    <div style="font-size:16px;color:#0E1C42;font-weight:800">Practice</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div style="padding:18px 18px 24px">
+
+  <div style="background:#FFF3DC;border:2px solid #F5E6C8;border-radius:14px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px">
+    <span style="font-size:24px;flex-shrink:0">🧑‍🦱</span>
+    <p style="font-size:15px;color:#0E1C42;line-height:1.6"><strong>Grown-ups:</strong> Press play on each video and help your student tap answers on screen!</p>
+  </div>
+
+  <!-- TEACHER INTRO VIDEO -->
+  <div class="act-card" style="border-left:6px solid #55C8E8">
+    <div class="act-header">
+      <div class="act-num" style="background:#55C8E8;border-radius:14px;font-size:22px">📺</div>
+      <div style="flex:1"><div class="act-title">Watch First!</div><div class="act-sub">Your teacher explains today's lesson.</div></div>
+      <div class="act-time" style="background:#55C8E8">⏱ 3 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="intro" id="vid-intro">
+        <div class="play-r"><div class="play-t"></div></div>
+        <div class="vid-label">Teacher Introduction Video</div>
+      </div>
+      <p style="font-size:18px;color:#3A4A6B;text-align:center;font-weight:700">👆 Watch, then start below!</p>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 1 -->
+  <div class="act-card" style="border-left:6px solid #E76F51" id="act1">
+    <div class="act-header">
+      <div class="act-num" style="background:#E76F51">1</div>
+      <div style="flex:1"><div class="act-title">⚡ Speed Round!</div><div class="act-sub">Add and subtract as fast as you can!</div></div>
+      <div class="act-time" style="background:#E76F51">⏱ 3 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="explain_1" id="vid-explain-1" style="aspect-ratio:16/7;margin-bottom:12px">
+        <div class="play-r" style="width:44px;height:44px"><div class="play-t" style="border-width:8px 0 8px 14px;margin-left:2px"></div></div>
+        <div class="vid-label">Watch your teacher explain this activity</div>
+      </div>
+      <div id="flu-play" style="text-align:center">
+        <button onclick="FLU.start()" style="background:#E76F51;color:#fff;border:none;border-radius:16px;padding:18px 40px;font-size:24px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(231,111,81,0.3)">⚡ Start!</button>
+      </div>
+      <div id="flu-game" style="display:none">
+        <div class="fluency-score" id="flu-pips"></div>
+        <div class="fluency-problem" id="flu-problem"></div>
+        <div style="display:flex;gap:12px;justify-content:center" id="flu-choices"></div>
+      </div>
+      <div id="flu-done" style="display:none" class="done-box">
+        <div class="icon">⚡</div>
+        <div class="msg" style="color:#E76F51" id="flu-result"></div>
+        <div class="sub" id="flu-time-result"></div>
+        <button onclick="FLU.start()" style="margin-top:12px;background:#E76F51;color:#fff;border:none;border-radius:12px;padding:10px 24px;font-size:16px;font-weight:700;cursor:pointer">🔄 Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 2 -->
+  <div class="act-card" style="border-left:6px solid #8B6FC0" id="act2">
+    <div class="act-header">
+      <div class="act-num" style="background:#8B6FC0">2</div>
+      <div style="flex:1"><div class="act-title">📅 Number of the Day</div><div class="act-sub">Learn all about today's number!</div></div>
+      <div class="act-time" style="background:#8B6FC0">⏱ 5 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="explain_2" id="vid-explain-2" style="aspect-ratio:16/7;margin-bottom:12px">
+        <div class="play-r" style="width:44px;height:44px;background:rgba(139,111,192,0.9);box-shadow:0 4px 16px rgba(139,111,192,0.4)"><div class="play-t" style="border-width:8px 0 8px 14px;margin-left:2px"></div></div>
+        <div class="vid-label">Watch your teacher explain this activity</div>
+      </div>
+      <div style="background:#F0E8FF;border:3px solid #8B6FC0;border-radius:20px;padding:20px;text-align:center;margin-bottom:16px">
+        <div style="font-size:14px;color:#8B6FC0;font-weight:700;text-transform:uppercase;letter-spacing:1px">Today's Number</div>
+        <div style="font-size:72px;font-weight:800;color:#0E1C42;line-height:1" id="notd-num"></div>
+      </div>
+      <div id="notd-area"></div>
+      <div id="notd-done" style="display:none" class="done-box">
+        <div class="icon">⭐</div>
+        <div class="msg" style="color:#8B6FC0">Number of the Day — Done!</div>
+        <div class="sub">You know so much about this number!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 3 -->
+  <div class="act-card" style="border-left:6px solid #34B76F" id="act3">
+    <div class="act-header">
+      <div class="act-num" style="background:#34B76F">3</div>
+      <div style="flex:1"><div class="act-title">🐌 Add &amp; Subtract</div><div class="act-sub">Count the pictures and solve!</div></div>
+      <div class="act-time" style="background:#34B76F">⏱ 5 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="explain_3" id="vid-explain-3" style="aspect-ratio:16/7;margin-bottom:12px">
+        <div class="play-r" style="width:44px;height:44px;background:rgba(52,183,111,0.9);box-shadow:0 4px 16px rgba(52,183,111,0.4)"><div class="play-t" style="border-width:8px 0 8px 14px;margin-left:2px"></div></div>
+        <div class="vid-label">Watch your teacher explain this activity</div>
+      </div>
+      <div id="wb-area"></div>
+      <div id="wb-done" style="display:none" class="done-box">
+        <div class="icon">🌟</div>
+        <div class="msg" style="color:#34B76F">Workbook — Done!</div>
+        <div class="sub">Great adding and subtracting!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 4 -->
+  <div class="act-card" style="border-left:6px solid #C7922C" id="act4">
+    <div class="act-header">
+      <div class="act-num" style="background:#C7922C">4</div>
+      <div style="flex:1"><div class="act-title">🎲 Dice Math</div><div class="act-sub">Roll and solve!</div></div>
+      <div class="act-time" style="background:#C7922C">⏱ 5 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="explain_4" id="vid-explain-4" style="aspect-ratio:16/7;margin-bottom:12px">
+        <div class="play-r" style="width:44px;height:44px;background:rgba(199,146,44,0.9);box-shadow:0 4px 16px rgba(199,146,44,0.4)"><div class="play-t" style="border-width:8px 0 8px 14px;margin-left:2px"></div></div>
+        <div class="vid-label">Watch your teacher explain this activity</div>
+      </div>
+      <div id="dice-area">
+        <div class="dots" id="dice-dots"></div>
+        <div style="display:flex;justify-content:center;gap:24px;margin:16px 0">
+          <div class="dice" id="die1">?</div>
+          <div style="font-size:36px;font-weight:800;color:#0E1C42;display:flex;align-items:center">+</div>
+          <div class="dice" id="die2">?</div>
+        </div>
+        <div style="text-align:center;margin:12px 0">
+          <button onclick="DICE.roll()" style="background:#C7922C;color:#fff;border:none;border-radius:16px;padding:16px 36px;font-size:22px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(199,146,44,0.3)" id="dice-roll-btn">🎲 Roll!</button>
+        </div>
+        <div id="dice-eq" style="display:none;text-align:center">
+          <div style="font-size:36px;font-weight:800;color:#0E1C42;margin:12px 0" id="dice-equation"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="dice-choices"></div>
+        </div>
+      </div>
+      <div id="dice-done" style="display:none" class="done-box">
+        <div class="icon">🎲</div>
+        <div class="msg" style="color:#C7922C">Dice Math — Done!</div>
+        <div class="sub">You rolled and solved like a pro!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 5 -->
+  <div class="act-card" style="border-left:6px solid #2A9D8F" id="act5">
+    <div class="act-header">
+      <div class="act-num" style="background:#2A9D8F">5</div>
+      <div style="flex:1"><div class="act-title">🔢 Counting Practice</div><div class="act-sub">Count forward, backward, and skip count!</div></div>
+      <div class="act-time" style="background:#2A9D8F">⏱ 4 min</div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="explain_5" id="vid-explain-5" style="aspect-ratio:16/7;margin-bottom:12px">
+        <div class="play-r" style="width:44px;height:44px;background:rgba(42,157,143,0.9);box-shadow:0 4px 16px rgba(42,157,143,0.4)"><div class="play-t" style="border-width:8px 0 8px 14px;margin-left:2px"></div></div>
+        <div class="vid-label">Watch your teacher explain this activity</div>
+      </div>
+      <div id="count-area"></div>
+      <div id="count-done" style="display:none" class="done-box">
+        <div class="icon">🏆</div>
+        <div class="msg" style="color:#2A9D8F">Counting — Done!</div>
+        <div class="sub">Amazing counting!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL DONE -->
+  <div id="all-done" style="display:none;background:linear-gradient(135deg,#34B76F 0%,#2A9D8F 100%);border-radius:18px;padding:32px 24px;text-align:center;margin-bottom:18px;box-shadow:0 4px 20px rgba(52,183,111,0.3)">
+    <div style="font-size:64px;margin-bottom:8px">🎉</div>
+    <div style="font-size:26px;color:#fff;font-weight:800;margin-bottom:6px">You Did It!</div>
+    <p style="font-size:17px;color:rgba(255,255,255,0.9);line-height:1.6">Amazing math today!<br>Tell a grown-up you're all done.</p>
+  </div>
+
+  <!-- CONCLUSION VIDEO -->
+  <div class="act-card" style="border-left:6px solid #55C8E8" id="conclusion-card">
+    <div class="act-header">
+      <div class="act-num" style="background:#55C8E8;border-radius:14px;font-size:22px">📺</div>
+      <div style="flex:1"><div class="act-title">Wrap Up</div><div class="act-sub">Watch your teacher wrap up today's lesson.</div></div>
+    </div>
+    <div class="act-body">
+      <div class="vid-ph" data-video="conclusion" id="vid-conclusion">
+        <div class="play-r"><div class="play-t"></div></div>
+        <div class="vid-label">Teacher Conclusion Video</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="background:#0E1C42;border-top:4px solid #55C8E8;padding:18px 28px;text-align:center">
+  <div style="font-size:15px;color:#fff;margin-bottom:4px"><span style="color:#55C8E8;font-weight:700">Optima Academy Online</span> · Math · Quarter 3 · Guided Practice</div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.5)">Lesson 11.1 · Addition &amp; Subtraction</div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.4)">© Optima Academy Online</div>
+</div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   VIDEO CONFIG — UPDATE THESE URLs TO EMBED REAL VIDEOS
+
+   Supported formats:
+   - Direct file:   "https://yoursite.com/videos/intro.mp4"
+   - YouTube:       "https://www.youtube.com/embed/VIDEO_ID"
+   - Vimeo:         "https://player.vimeo.com/video/VIDEO_ID"
+   - Google Drive:  "https://drive.google.com/file/d/FILE_ID/preview"
+   - Leave as "" to keep the placeholder graphic
+   ═══════════════════════════════════════════════════════════════ */
+var VIDEOS = {
+
+  // ── LESSON INTRO & CONCLUSION ──
+  intro:        "introduction_video.mp4",
+  conclusion:   "https://www.youtube.com/embed/KmbdJy1s8Is",
+
+  // ── ACTIVITY EXPLAINERS (before each activity) ──
+  explain_1:    "speed_round_video.mp4",
+  explain_2:    "notd_video.mp4",
+  explain_3:    "https://www.youtube.com/embed/_ZJqn5toEJs",
+  explain_4:    "dice_video.mp4",
+  explain_5:    "https://www.youtube.com/embed/ILpKJ2k4GXc",
+
+  // ── FEEDBACK: ACTIVITY 1 — Speed Round ──
+  fb_1_correct: "speed_round_correct_.mp4",
+  fb_1_wrong:   "speed_round_incorrect.mp4",
+
+  // ── FEEDBACK: ACTIVITY 2 — Number of the Day ──
+  fb_2_correct: "notd_correct.mp4",
+  fb_2_wrong:   "notd_incorrect.mp4",
+
+  // ── FEEDBACK: ACTIVITY 3 — Add & Subtract with Pictures ──
+  fb_3_correct: "pictures_correct.mp4",
+  fb_3_wrong:   "pictures_incorrect.mp4",
+
+  // ── FEEDBACK: ACTIVITY 4 — Dice Math ──
+  fb_4_correct: "dice_correct.mp4",
+  fb_4_wrong:   "dice_incorrect.mp4",
+
+  // ── FEEDBACK: ACTIVITY 5 — Counting Practice ──
+  fb_5_correct: "counting_correct.mp4",
+  fb_5_wrong:   "counting_incorrect.mp4",
+};
+
+/* ═══════════ HELPERS ═══════════ */
+function $(id){return document.getElementById(id)}
+var completed={1:false,2:false,3:false,4:false,5:false};
+
+function isYT(url){return url.indexOf('youtube.com')!==-1||url.indexOf('vimeo.com')!==-1||url.indexOf('drive.google.com')!==-1}
+
+function embedTag(url,cls){
+  if(isYT(url)){return '<div class="'+cls+'"><iframe src="'+url+'" allowfullscreen allow="autoplay"></iframe></div>'}
+  return '<div class="'+cls+'"><video controls playsinline src="'+url+'"></video></div>';
+}
+
+function renderPageVideos(){
+  var els=document.querySelectorAll('[data-video]');
+  for(var i=0;i<els.length;i++){
+    var key=els[i].getAttribute('data-video');
+    if(VIDEOS[key]&&VIDEOS[key].length>0){
+      var parent=els[i].parentNode;
+      var tmp=document.createElement('div');
+      tmp.innerHTML=embedTag(VIDEOS[key],'vid-embed');
+      parent.replaceChild(tmp.firstChild,els[i]);
+    }
+  }
+}
+
+function showFeedback(actNum,correct,onClose){
+  var old=document.getElementById('fb-ov');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='fb-ov';ov.className='fb-overlay';
+  var c=correct?'#34B76F':'#E76F51';
+  var rgb=correct?'52,183,111':'231,111,81';
+  var vidKey='fb_'+actNum+'_'+(correct?'correct':'wrong');
+  var vidUrl=VIDEOS[vidKey];
+  var vidHtml;
+  if(vidUrl&&vidUrl.length>0){
+    vidHtml=embedTag(vidUrl,'vid-embed-sm');
+  }else{
+    vidHtml='<div class="fb-vid"><div class="play-r" style="background:rgba('+rgb+',0.9);box-shadow:0 4px 16px rgba('+rgb+',0.4)"><div class="play-t"></div></div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px">[ Teacher feedback video ]</div></div>';
+  }
+  ov.innerHTML='<div class="fb-card" style="border-top:6px solid '+c+'"><div style="font-size:48px;margin-bottom:4px">'+(correct?'🎉':'🤔')+'</div><div style="font-size:22px;font-weight:800;color:'+c+'">'+(correct?'Great Job!':'Try Again!')+'</div>'+vidHtml+'<button id="fb-btn" style="margin-top:10px;background:'+c+';color:#fff;border:none;border-radius:14px;padding:12px 28px;font-size:18px;font-weight:800;cursor:pointer">'+(correct?'Next →':'Try Again')+'</button></div>';
+  document.body.appendChild(ov);
+  function close(){var v=ov.querySelector('video');if(v)v.pause();var ifr=ov.querySelector('iframe');if(ifr)ifr.src='';ov.remove();if(onClose)onClose(correct)}
+  $('fb-btn').onclick=close;
+  ov.onclick=function(e){if(e.target===ov)close()};
+}
+
+function updateProgress(){
+  var done=0;for(var k in completed)if(completed[k])done++;
+  var pct=Math.round((done/5)*100);
+  $('progress-fill').style.width=pct+'%';
+  $('progress-label').textContent=done+' / 5';
+  for(var i=1;i<=5;i++){
+    var star=$('star-'+i);
+    if(i<=done)star.classList.add('earned');else star.classList.remove('earned');
+  }
+}
+
+function checkAllDone(){
+  updateProgress();
+  for(var k in completed)if(!completed[k])return;
+  $('all-done').style.display='block';
+  $('all-done').scrollIntoView({behavior:'smooth',block:'center'});
+  launchConfetti();
+}
+
+function launchConfetti(){
+  var canvas=$('confetti-canvas');
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  var pieces=[];
+  var colors=['#55C8E8','#34B76F','#E76F51','#8B6FC0','#C7922C','#FFD700','#FF69B4','#fff'];
+  for(var i=0;i<200;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height*-1,
+      w:Math.random()*10+5,
+      h:Math.random()*6+3,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      vx:(Math.random()-0.5)*4,
+      vy:Math.random()*4+2,
+      rot:Math.random()*360,
+      rv:(Math.random()-0.5)*8,
+      opacity:1
+    });
+  }
+  var frame=0,maxFrames=180;
+  function draw(){
+    if(frame>=maxFrames){ctx.clearRect(0,0,canvas.width,canvas.height);return}
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(var i=0;i<pieces.length;i++){
+      var p=pieces[i];
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;p.vy+=0.05;
+      if(frame>maxFrames*0.7)p.opacity=Math.max(0,1-((frame-maxFrames*0.7)/(maxFrames*0.3)));
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=p.opacity;
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+
+/* ═══════════ ACT 1: FLUENCY ═══════════ */
+var FLU=(function(){
+  var p=[],pi=0,sc=0,st=0,N=10;
+  function gen(){p=[];for(var i=0;i<N;i++){var a=randInt(1,9),b=randInt(1,Math.max(1,9-a));if(i>=N/2){var s=a+b;p.push({text:s+' − '+a+' = ?',answer:b})}else p.push({text:a+' + '+b+' = ?',answer:a+b})}shuffle(p)}
+  function show(){if(pi>=N){fin();return}var q=p[pi];$('flu-problem').textContent=q.text;var a=q.answer,o=[a];while(o.length<3){var w=randInt(Math.max(0,a-3),Math.min(18,a+3));if(o.indexOf(w)===-1&&w>=0)o.push(w)}shuffle(o);var h='';o.forEach(function(v){h+='<button class="tap-btn" style="min-width:80px;font-size:32px" onclick="FLU.pick('+v+','+a+',this)">'+v+'</button>'});$('flu-choices').innerHTML=h;var ph='';for(var i=0;i<N;i++)ph+='<div class="fluency-pip'+(i<pi?(p[i]._r?' right':' wrong'):'')+'"></div>';$('flu-pips').innerHTML=ph}
+  function fin(){$('flu-game').style.display='none';$('flu-done').style.display='block';$('flu-result').textContent=sc+' out of '+N+'!';$('flu-time-result').textContent='Time: '+((Date.now()-st)/1000).toFixed(1)+' seconds';completed[1]=true;checkAllDone()}
+  return{start:function(){gen();pi=0;sc=0;$('flu-play').style.display='none';$('flu-done').style.display='none';$('flu-game').style.display='block';st=Date.now();show()},pick:function(v,a,btn){var r=v===a;p[pi]._r=r;if(r){sc++;btn.classList.add('correct')}else btn.classList.add('wrong');$('flu-choices').querySelectorAll('button').forEach(function(b){b.disabled=true;if(parseInt(b.textContent)===a)b.classList.add('correct')});setTimeout(function(){pi++;show()},600)}}
+})();
+
+/* ═══════════ ACT 2: NUMBER OF THE DAY ═══════════ */
+var NOTD=(function(){
+  var num,steps,si=0;
+  var nw=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+  function gen(){var t=Math.floor(num/10),o=num%10,odd=num%2!==0;steps=[];
+    var wc=[nw[num]];while(wc.length<3){var w=nw[randInt(1,20)];if(wc.indexOf(w)===-1)wc.push(w)}shuffle(wc);
+    steps.push({q:'What is the number word?',a:nw[num],c:wc,t:'word'});
+    var tc=[t];while(tc.length<3){var x=randInt(0,2);if(tc.indexOf(x)===-1)tc.push(x)}shuffle(tc);
+    steps.push({q:'How many tens?',a:t,c:tc});
+    var oc=[o];while(oc.length<3){var x=randInt(0,9);if(oc.indexOf(x)===-1)oc.push(x)}shuffle(oc);
+    steps.push({q:'How many ones?',a:o,c:oc});
+    steps.push({q:'Odd or even?',a:odd?'Odd':'Even',c:['Odd','Even']});
+    var m1=num+1,m1c=[m1];while(m1c.length<3){var x=randInt(Math.max(0,m1-2),m1+2);if(m1c.indexOf(x)===-1)m1c.push(x)}shuffle(m1c);steps.push({q:'1 more = ?',a:m1,c:m1c});
+    var l1=num-1,l1c=[l1];while(l1c.length<3){var x=randInt(Math.max(0,l1-2),l1+2);if(l1c.indexOf(x)===-1&&x>=0)l1c.push(x)}shuffle(l1c);steps.push({q:'1 less = ?',a:l1,c:l1c});
+    var m10=num+10,m10c=[m10];while(m10c.length<3){var x=randInt(Math.max(0,m10-5),m10+5);if(m10c.indexOf(x)===-1)m10c.push(x)}shuffle(m10c);steps.push({q:'10 more = ?',a:m10,c:m10c});
+    if(num>=10){var l10=num-10,l10c=[l10];while(l10c.length<3){var x=randInt(Math.max(0,l10-3),l10+5);if(l10c.indexOf(x)===-1&&x>=0)l10c.push(x)}shuffle(l10c);steps.push({q:'10 less = ?',a:l10,c:l10c})}
+  }
+  function show(){if(si>=steps.length){$('notd-area').style.display='none';$('notd-done').style.display='block';completed[2]=true;checkAllDone();return}
+    var s=steps[si],h='<div style="text-align:center"><div class="dots" style="margin-bottom:12px">';
+    for(var i=0;i<steps.length;i++)h+='<div class="dot'+(i<si?' done':(i===si?' active':''))+'"></div>';
+    h+='</div><div style="font-size:22px;font-weight:800;color:#0E1C42;margin-bottom:14px">'+s.q+'</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">';
+    s.c.forEach(function(v){h+='<button class="tap-btn" style="font-size:'+(s.t==='word'?'18':'28')+'px;min-width:80px" onclick="NOTD.pick(\''+v+'\',\''+s.a+'\',this)">'+v+'</button>'});
+    h+='</div></div>';$('notd-area').innerHTML=h}
+  return{init:function(){num=19;$('notd-num').textContent=num;si=0;gen();show()},pick:function(v,a,btn){if(String(v)===String(a)){btn.classList.add('correct');showFeedback(2,true,function(){si++;show()})}else{btn.classList.add('wrong');showFeedback(2,false,function(){btn.classList.remove('wrong')})}}}
+})();
+
+/* ═══════════ ACT 3: WORKBOOK ═══════════ */
+var WB=(function(){
+  var sets=[],si=0,ei=0;var em=['🐌','🍋'];
+  function gen(){sets=[];for(var s=0;s<2;s++){var a=randInt(2,6),b=randInt(1,Math.min(4,10-a)),sum=a+b;sets.push({a:a,b:b,sum:sum,e:em[s],eqs:[{t:a+' + '+b+' = ?',a:sum},{t:b+' + '+a+' = ?',a:sum},{t:sum+' − '+a+' = ?',a:b},{t:sum+' − '+b+' = ?',a:a}]})}}
+  function showS(){if(si>=sets.length){$('wb-area').style.display='none';$('wb-done').style.display='block';completed[3]=true;checkAllDone();return}ei=0;showE()}
+  function showE(){var s=sets[si];if(ei>=s.eqs.length){si++;showS();return}var eq=s.eqs[ei];
+    var h='<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:6px"><div style="background:#EAF8FD;border:2px solid #55C8E8;border-radius:16px;padding:10px 14px;display:flex;gap:4px;flex-wrap:wrap">';
+    for(var i=0;i<s.a;i++)h+='<span style="font-size:32px">'+s.e+'</span>';
+    h+='</div><div style="background:#FFF0EB;border:2px solid #E76F51;border-radius:16px;padding:10px 14px;display:flex;gap:4px;flex-wrap:wrap">';
+    for(var i=0;i<s.b;i++)h+='<span style="font-size:32px">'+s.e+'</span>';
+    h+='</div></div><div class="dots">';
+    for(var i=0;i<s.eqs.length;i++)h+='<div class="dot'+(i<ei?' done':(i===ei?' active':''))+'"></div>';
+    h+='</div><div style="font-size:40px;font-weight:800;color:#0E1C42;text-align:center;margin:12px 0">'+eq.t+'</div>';
+    var ans=eq.a,o=[ans];while(o.length<3){var w=randInt(Math.max(0,ans-3),Math.min(18,ans+3));if(o.indexOf(w)===-1&&w>=0)o.push(w)}shuffle(o);
+    h+='<div style="display:flex;gap:12px;justify-content:center">';o.forEach(function(v){h+='<button class="tap-btn" style="font-size:32px;min-width:80px" onclick="WB.pick('+v+','+ans+',this)">'+v+'</button>'});h+='</div>';$('wb-area').innerHTML=h}
+  return{init:function(){gen();si=0;showS()},pick:function(v,a,btn){if(v===a){btn.classList.add('correct');showFeedback(3,true,function(){ei++;showE()})}else{btn.classList.add('wrong');showFeedback(3,false,function(){btn.classList.remove('wrong')})}}}
+})();
+
+/* ═══════════ ACT 4: DICE ═══════════ */
+var DICE=(function(){
+  var d1,d2,rnd=0,N=5;var df=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+  function dots(){var h='';for(var i=0;i<N;i++)h+='<div class="dot'+(i<rnd?' done':(i===rnd?' active':''))+'"></div>';$('dice-dots').innerHTML=h}
+  function addQ(){var s=d1+d2;$('dice-equation').textContent=d1+' + '+d2+' = ?';var o=[s];while(o.length<3){var w=randInt(Math.max(2,s-2),Math.min(12,s+2));if(o.indexOf(w)===-1)o.push(w)}shuffle(o);var h='';o.forEach(function(v){h+='<button class="tap-btn" style="font-size:28px;min-width:70px" onclick="DICE.pick('+v+','+s+',\'a\',this)">'+v+'</button>'});$('dice-choices').innerHTML=h;$('dice-eq').style.display='block'}
+  function subQ(){var s=d1+d2,big=Math.max(d1,d2),sm=Math.min(d1,d2);$('dice-equation').textContent=s+' − '+big+' = ?';var o=[sm];while(o.length<3){var w=randInt(Math.max(0,sm-2),sm+3);if(o.indexOf(w)===-1&&w>=0)o.push(w)}shuffle(o);var h='';o.forEach(function(v){h+='<button class="tap-btn" style="font-size:28px;min-width:70px" onclick="DICE.pick('+v+','+sm+',\'s\',this)">'+v+'</button>'});$('dice-choices').innerHTML=h}
+  return{init:function(){rnd=0;dots()},roll:function(){d1=randInt(1,6);d2=randInt(1,6);$('die1').textContent=df[d1];$('die2').textContent=df[d2];$('die1').classList.add('rolling');$('die2').classList.add('rolling');$('dice-roll-btn').disabled=true;setTimeout(function(){$('die1').classList.remove('rolling');$('die2').classList.remove('rolling');$('dice-roll-btn').style.display='none';addQ()},500)},pick:function(v,a,t,btn){if(v===a){btn.classList.add('correct');showFeedback(4,true,function(){if(t==='a')subQ();else{rnd++;if(rnd>=N){$('dice-area').style.display='none';$('dice-done').style.display='block';completed[4]=true;checkAllDone()}else{dots();$('dice-eq').style.display='none';$('die1').textContent='?';$('die2').textContent='?';$('dice-roll-btn').style.display='';$('dice-roll-btn').disabled=false}}})}else{btn.classList.add('wrong');showFeedback(4,false,function(){btn.classList.remove('wrong')})}}}
+})();
+
+/* ═══════════ ACT 5: COUNTING ═══════════ */
+var COUNT=(function(){
+  var seqs=[{l:'Count Forward 1 → 20',n:[]},{l:'Count Backward 20 → 1',n:[]},{l:'Skip Count by 5s',n:[]},{l:'Skip Count by 10s',n:[]}];
+  var sI=0,pI=0,bl=[];
+  function gen(){var f=[];for(var i=1;i<=20;i++)f.push(i);seqs[0].n=f;var b=[];for(var i=20;i>=1;i--)b.push(i);seqs[1].n=b;var s5=[];for(var i=5;i<=50;i+=5)s5.push(i);seqs[2].n=s5;var s10=[];for(var i=10;i<=100;i+=10)s10.push(i);seqs[3].n=s10}
+  function pickBl(seq){bl=[];var c=Math.max(3,Math.floor(seq.length*0.4)),pos=[];for(var i=1;i<seq.length;i++)pos.push(i);shuffle(pos);for(var i=0;i<Math.min(c,pos.length);i++)bl.push(pos[i]);bl.sort(function(a,b){return a-b});pI=0}
+  function isBl(i){return bl.indexOf(i)!==-1}
+  function curBl(){for(var i=0;i<bl.length;i++)if(bl[i]>=pI)return bl[i];return -1}
+  function showS(){if(sI>=seqs.length){$('count-area').style.display='none';$('count-done').style.display='block';completed[5]=true;checkAllDone();return}pickBl(seqs[sI].n);pI=0;render()}
+  function render(){var s=seqs[sI],cb=curBl();var h='<div style="text-align:center"><div class="dots" style="margin-bottom:8px">';
+    for(var i=0;i<seqs.length;i++)h+='<div class="dot'+(i<sI?' done':(i===sI?' active':''))+'"></div>';
+    h+='</div><div style="font-size:20px;font-weight:800;color:#0E1C42;margin-bottom:14px">'+s.l+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px">';
+    for(var i=0;i<s.n.length;i++){if(!isBl(i))h+='<div class="count-cell filled">'+s.n[i]+'</div>';else if(cb>i||cb===-1)h+='<div class="count-cell filled">'+s.n[i]+'</div>';else if(i===cb)h+='<div class="count-cell current">?</div>';else h+='<div class="count-cell">?</div>'}
+    h+='</div>';
+    if(cb!==-1){var ans=s.n[cb],o=[ans],step=sI>=2?5:1;if(sI===3)step=10;while(o.length<3){var w=ans+(o.length%2===0?1:-1)*step*randInt(1,2);if(o.indexOf(w)===-1&&w>0)o.push(w);else{w=randInt(Math.max(1,ans-step*2),ans+step*2);if(o.indexOf(w)===-1&&w>0)o.push(w)}}shuffle(o);h+='<div style="display:flex;gap:10px;justify-content:center">';o.forEach(function(v){h+='<button class="tap-btn" style="font-size:24px;min-width:64px" onclick="COUNT.pick('+v+','+ans+',this)">'+v+'</button>'});h+='</div>'}
+    else h+='<div style="text-align:center;margin-top:8px"><button class="tap-btn" style="font-size:18px;background:#2A9D8F;color:#fff;border-color:#2A9D8F" onclick="COUNT.next()">Next →</button></div>';
+    h+='</div>';$('count-area').innerHTML=h}
+  return{init:function(){gen();sI=0;showS()},pick:function(v,a,btn){if(v===a){btn.classList.add('correct');pI=curBl()+1;setTimeout(render,400)}else{btn.classList.add('wrong');setTimeout(function(){btn.classList.remove('wrong')},500)}},next:function(){sI++;showS()}}
+})();
+
+/* ═══════════ INIT ═══════════ */
+function initAll(){renderPageVideos();NOTD.init();WB.init();DICE.init();COUNT.init()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAll);else initAll();
+</script>
+</body>
+</html>
